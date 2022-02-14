@@ -30,7 +30,7 @@ module.exports = {
         password: hashPassword,
         isActive: req.body.isActive,
       });
-      res.status(201).json({ message: "create data succes", data: data });
+      res.status(201).json({ message: "Data berhasil di buat", data: data });
     } catch (error) {
       res.status(404).json({ message: error.message });
     }
@@ -50,24 +50,42 @@ module.exports = {
         // [Op.and]: [{ password: "senin sore" }], //menampilkan data dengan op.and
         //   [Op.or]: [{ id: "1" }, { password: "senin sore" }], //menampilkan data dengan Op.or(atau)
         // },
+        offset: JSON.parse(req.query.page),
+        limit: JSON.parse(req.query.size),
       });
       if (data.length > 0) {
-        res.status(201).json({ message: "Get Data succes", data: data });
+        res.status(201).json({ message: "Berhasil ambil data", data: data });
       } else {
-        res.status(201).json({ message: "data tidak ada" });
+        res.status(201).json({ message: "Tidak ada data" });
       }
     } catch (error) {
       res.status(404).json({ message: error.message });
     }
   },
 
+  getAllUser: async (req, res) => {
+    try {
+      const data = await User.findAll({
+        include: [{ model: Notes }],
+      });
+      if (data.length > 0) {
+        res
+          .status(201)
+          .json({ message: "berhasil ambil semua data", data: data });
+      } else {
+        res.status(404).json({ message: "Tidak ada data" });
+      }
+    } catch (error) {
+      res.status(201).json({ message: error.message });
+    }
+  },
   getOneUser: async (req, res) => {
     try {
       const data = await User.findAll({
         where: { id: req.params.id },
       });
       if (data.length > 0) {
-        res.status(201).json({ message: "berhasil get one data", data: data });
+        res.status(201).json({ message: "berhasil ambil 1 data", data: data });
       } else {
         res.status(201).json({ message: "data tidak ada" });
       }
@@ -163,5 +181,8 @@ module.exports = {
     } catch (error) {
       res.json({ msg: error.message });
     }
+  },
+  logout: async (req, res) => {
+    res.json({ message: "Berhasil logout" });
   },
 };

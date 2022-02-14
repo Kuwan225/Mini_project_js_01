@@ -4,7 +4,7 @@ const router = express.Router();
 const controllerUser = require("../Controller/user");
 const middleware = require("../helper/middleware");
 
-router.post("/user", middleware.middleware, controllerUser.user);
+router.post("/user_login", middleware.autentication, controllerUser.user);
 
 /**
  * @swagger
@@ -70,12 +70,12 @@ router.post("/create_user", controllerUser.createUser);
  *        description: Some error happened
  */
 router.post("/register", controllerUser.register);
-router.post("/login", middleware.middleware, controllerUser.login);
+router.post("/login", middleware.autentication, controllerUser.login);
 /**
  * @swagger
- * /get_user:
+ * /get_all_user:
  *  get:
- *    summary: Get data user
+ *    summary: Get all data user
  *    tags: [USER]
  *    responses:
  *      200:
@@ -86,6 +86,7 @@ router.post("/login", middleware.middleware, controllerUser.login);
  *        description: Some error happened
  */
 
+router.get("/get_all_user", controllerUser.getAllUser);
 router.get("/get_user", controllerUser.getUser);
 /**
  * @swagger
@@ -172,5 +173,21 @@ router.put("/update_user/:id", controllerUser.updateUser);
  *        description: Some error happened
  */
 router.delete("/delete_user/:id", controllerUser.deleteUser);
+
+/**
+ * @swagger
+ * /logout:
+ *  get:
+ *    summary: Logout user
+ *    tags: [USER]
+ *    responses:
+ *      200:
+ *        description: The book was created
+ *      404:
+ *        description: The book was not found
+ *      500:
+ *        description: Some error happened
+ */
+router.get("/logout", controllerUser.logout);
 
 module.exports = router;
