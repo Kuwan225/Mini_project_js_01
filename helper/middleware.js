@@ -6,9 +6,7 @@ module.exports = {
     const user = jwt.decode(token, process.env.TOKEN);
 
     if (!user || !token) {
-      return res
-        .status(401)
-        .json({ message: `Please login or Register first!` });
+      return res.status(401).json({ message: `Anda belum registrasi` });
     }
     req.payload = user;
     next();

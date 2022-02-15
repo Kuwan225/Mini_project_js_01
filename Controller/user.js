@@ -7,7 +7,7 @@ const db = require("../helper/relation");
 const { User, Notes } = db;
 
 module.exports = {
-  user: async (req, res) => {
+  userLogin: async (req, res) => {
     try {
       const data = await User.findOne({
         where: {
@@ -53,11 +53,11 @@ module.exports = {
         offset: JSON.parse(req.query.page),
         limit: JSON.parse(req.query.size),
       });
-      if (data.length > 0) {
-        res.status(201).json({ message: "Berhasil ambil data", data: data });
-      } else {
-        res.status(201).json({ message: "Tidak ada data" });
-      }
+      data.length > 0
+        ? res
+            .status(201)
+            .json({ message: "data berhasil di ambil", data: data })
+        : res.status(404).json({ message: "tidak ada data" });
     } catch (error) {
       res.status(404).json({ message: error.message });
     }
@@ -68,13 +68,11 @@ module.exports = {
       const data = await User.findAll({
         include: [{ model: Notes }],
       });
-      if (data.length > 0) {
-        res
-          .status(201)
-          .json({ message: "berhasil ambil semua data", data: data });
-      } else {
-        res.status(404).json({ message: "Tidak ada data" });
-      }
+      data.length > 0
+        ? res
+            .status(201)
+            .json({ message: "data berhasil di ambil", data: data })
+        : res.status(404).json({ message: "tidak ada data" });
     } catch (error) {
       res.status(201).json({ message: error.message });
     }
@@ -84,11 +82,9 @@ module.exports = {
       const data = await User.findAll({
         where: { id: req.params.id },
       });
-      if (data.length > 0) {
-        res.status(201).json({ message: "berhasil ambil 1 data", data: data });
-      } else {
-        res.status(201).json({ message: "data tidak ada" });
-      }
+      data.length > 0
+        ? res.status(201).json({ message: "Berhasil ambil 1 data", data: data })
+        : res.status(404).json({ message: "data tidak ada" });
     } catch (error) {
       res.status(404).json({ message: error.message });
     }
@@ -111,11 +107,9 @@ module.exports = {
           },
         }
       );
-      if (data > 0) {
-        res.status(201).json({ message: "data berhasil di update" });
-      } else {
-        res.status(201).json({ message: "data tidak ada" });
-      }
+      data > 0
+        ? res.status(201).json({ message: "data berhasil di update" })
+        : res.status(404).json({ message: "data tidak ada" });
     } catch (error) {
       res.status(404).json({ message: error.message });
     }
@@ -128,11 +122,9 @@ module.exports = {
           id: req.params.id,
         },
       });
-      if (data > 0) {
-        res.status(201).json({ message: "data berhasil di delete" });
-      } else {
-        res.status(201).json({ message: "data tidak ada" });
-      }
+      data > 0
+        ? res.status(201).json({ message: "data berhasil di delete" })
+        : res.status(404).json({ message: "data tidak ada" });
     } catch (error) {
       res.status(404).json({ message: error.message });
     }

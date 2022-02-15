@@ -4,7 +4,7 @@ const router = express.Router();
 const controllerUser = require("../Controller/user");
 const middleware = require("../helper/middleware");
 
-router.post("/user_login", middleware.autentication, controllerUser.user);
+router.post("/user_login", middleware.autentication, controllerUser.userLogin);
 
 /**
  * @swagger

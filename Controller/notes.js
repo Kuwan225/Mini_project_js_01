@@ -23,11 +23,9 @@ module.exports = {
   getNote: async (req, res) => {
     try {
       const data = await Notes.findAll();
-      if (data.length > 0) {
-        res.status(201).json({ message: "berhasil ambil data", data: data });
-      } else {
-        res.status(201).json({ message: "data tidak ada" });
-      }
+      data.length > 0
+        ? res.status(201).json({ message: "berhasil ambil data", data: data })
+        : res.status(404).json({ message: "tidak ada data" });
     } catch (error) {
       res.status(404).json({ message: error.message });
     }
@@ -39,11 +37,9 @@ module.exports = {
           id: req.params.id,
         },
       });
-      if (data > 0) {
-        res.status(201).json({ message: "data berhasil di delete" });
-      } else {
-        res.status(201).json({ message: "data tidak ada" });
-      }
+      data > 0
+        ? res.status(201).json({ message: "data berhasil di delete" })
+        : res.status(404).json({ message: "data tidak ada" });
     } catch (error) {
       res.status(404).json({ message: error.message });
     }
@@ -60,11 +56,9 @@ module.exports = {
           where: { id: req.params.id },
         }
       );
-      if (data > 0) {
-        res.status(201).json({ message: "data berhasil di update" });
-      } else {
-        res.status(201).json({ message: "data tidak ada" });
-      }
+      data.length > 0
+        ? res.status(201).json({ message: "data berhasil di update" })
+        : res.status(404).json({ message: "tidak ada data" });
     } catch (error) {
       res.status(404).json({ message: error.message });
     }
